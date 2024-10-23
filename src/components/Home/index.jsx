@@ -1,8 +1,11 @@
+import ProductList from "../Sub/productList";
 
 function HomeComponent() {
   return (
     <>
-Hello
+      <div className="container py-10 mx-auto ">
+        <ProductList />
+      </div>
     </>
   );
 }
