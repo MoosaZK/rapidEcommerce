@@ -39,7 +39,7 @@ const FilterComponent = () => {
     <div className="relative">
       <button
         onClick={togglePopup}
-        className="px-10 py-2 text-white bg-orange-600"
+        className="px-10 py-2 font-semibold text-white bg-black"
       >
         Filter
       </button>

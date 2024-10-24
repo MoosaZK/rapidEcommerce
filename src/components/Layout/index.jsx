@@ -25,7 +25,7 @@ function Layout({ children }) {
       <Footer fontFamily={tomorrow.className}/> */}
       <Header />
       <main>{children}</main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

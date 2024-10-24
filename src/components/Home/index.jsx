@@ -17,8 +17,8 @@ function HomeComponent() {
 
   return (
     <>
-      <div className="container py-10 mx-auto">
-        <div className="flex items-center gap-5 mb-6">
+      <div className="container py-10 mx-auto mt-16 md:mt-24">
+        <div className="flex items-center gap-5 px-2 mb-6 md:px-0">
           <input
             type="text"
             placeholder="Search products..."
