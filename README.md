@@ -12,8 +12,21 @@ yarn install
 ```bash
 yarn dev
 ```
-
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+##Demo Video
+
+
+https://github.com/user-attachments/assets/d5908934-1001-4477-9373-53dbef6bc455
+
+
+
+##Home / Product Page
+![Screenshot 2024-10-24 195853](https://github.com/user-attachments/assets/451d35b6-b8cd-47d7-9ca8-917da786de10)
+
+## Cart Page
+![Screenshot 2024-10-24 195930](https://github.com/user-attachments/assets/8d39332d-c28d-4376-9e01-27851891ade7)
+
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
