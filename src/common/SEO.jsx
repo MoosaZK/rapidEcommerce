@@ -13,7 +13,7 @@ function SEO({ title, desc, route }) {
 
   return (
     <Head>
-      <title>{`${title} — dummy web`}</title>
+      <title>{`${title}`}</title>
       <meta name="description" content={desc || description} />
       <link rel="canonical" href={`${baseUrl}${route}`} />
       <meta name="keywords" content={keywords} />

@@ -1,13 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Search products by query
 export const fetchSearchProducts = createAsyncThunk('cart/fetchSearchProducts', async (query) => {
   const response = await axios.get(`https://dummyjson.com/products/search?q=${query}`);
   return response.data.products;
 });
 
-// Fetch products by category
 export const fetchProductsByCategory = createAsyncThunk('cart/fetchProductsByCategory', async (category) => {
   const response = await axios.get(`https://dummyjson.com/products/category/${category}`);
   return response.data.products;

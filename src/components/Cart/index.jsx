@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart, adjustQuantity } from '@/store/slice/cartSlice'; 
-import { motion, AnimatePresence } from 'framer-motion'; // Import motion and AnimatePresence
+import { motion, AnimatePresence } from 'framer-motion'; 
+import Image from 'next/image';
 
 export default function CartComponent() {
   const dispatch = useDispatch();
@@ -16,24 +17,24 @@ export default function CartComponent() {
   };
 
   return (
-    <div className="container p-4 mx-auto mt-16 md:mt-24">
+    <div className="container p-4 mx-auto mt-16 md:mt-28">
       <h1 className="mb-4 text-2xl">Shopping Cart</h1>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
         <div>
-          <AnimatePresence> {/* Wrap items in AnimatePresence for removal animations */}
+          <AnimatePresence> 
             {cartItems.map((item) => (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, x: 50 }} // Initial state
-                animate={{ opacity: 1, x: 0 }}   // Animation when entering
-                exit={{ opacity: 0, x: -50 }}     // Animation when exiting
-                layout  // Helps with smooth transitions between items
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                layout  
                 className="flex items-center justify-between p-2 border-b"
               >
                 <div className="flex items-center">
-                  <img src={item.images[0]} alt={item.title} className="object-cover w-20 h-20 mr-4" />
+                  <Image src={item.images[0]} width={40} height={40} alt={item.title} className="object-cover w-20 h-20 mr-4" />
                   <div>
                     <h2 className="font-bold">{item.title}</h2>
                     <p>${item.price}</p>
