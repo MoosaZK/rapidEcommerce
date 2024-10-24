@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllProducts, addToCart } from "@/store/slice/cartSlice";
+import { fetchSearchProducts, addToCart } from "@/store/slice/cartSlice";
 import Image from "next/image";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
-const ProductList = () => {
+const ProductList = ({ searchQuery }) => {
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector((state) => state.cart);
 
   useEffect(() => {
-    dispatch(fetchAllProducts());
-  }, [dispatch]);
+    dispatch(fetchSearchProducts(searchQuery));
+  }, [dispatch, searchQuery]);
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
@@ -22,7 +22,7 @@ const ProductList = () => {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-    }); 
+    });
   };
 
   if (loading) return <p>Loading...</p>;
@@ -42,7 +42,7 @@ const ProductList = () => {
           <div className="p-4">
             <h2>{product.title}</h2>
             <p>${product.price}</p>
-            <button 
+            <button
               onClick={() => handleAddToCart(product)}
               className="px-4 py-2 mt-2 text-white bg-blue-500 rounded"
             >

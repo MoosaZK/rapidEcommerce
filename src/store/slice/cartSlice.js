@@ -1,72 +1,95 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchProducts } from '@/service/apiService';
+import axios from 'axios';
 
-export const fetchAllProducts = createAsyncThunk('cart/fetchAllProducts', async () => {
-  const response = await fetchProducts();
-  return response.products;
+// Search products by query
+export const fetchSearchProducts = createAsyncThunk('cart/fetchSearchProducts', async (query) => {
+  const response = await axios.get(`https://dummyjson.com/products/search?q=${query}`);
+  return response.data.products;
+});
+
+// Fetch products by category
+export const fetchProductsByCategory = createAsyncThunk('cart/fetchProductsByCategory', async (category) => {
+  const response = await axios.get(`https://dummyjson.com/products/category/${category}`);
+  return response.data.products;
 });
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
-    cartItems: [], 
+    cartItems: [],
     totalQuantity: 0,
-    totalPrice: 0,  
-    products: [], 
+    totalPrice: 0,
+    products: [],
     loading: false,
     error: null,
   },
   reducers: {
     addToCart: (state, action) => {
-      const itemInCart = state.cartItems.find(item => item.id === action.payload.id);
-      if (itemInCart) {
-        itemInCart.quantity += 1;
-        itemInCart.totalPrice += itemInCart.price;
+      const product = action.payload;
+      const existingItem = state.cartItems.find((item) => item.id === product.id);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+        existingItem.totalPrice += product.price;
       } else {
-        state.cartItems.push({ 
-          ...action.payload, 
-          quantity: 1, 
-          totalPrice: action.payload.price 
+        state.cartItems.push({
+          ...product,
+          quantity: 1,
+          totalPrice: product.price,
         });
       }
-      state.totalQuantity += 1; 
-      state.totalPrice += action.payload.price;
+
+      state.totalQuantity += 1;
+      state.totalPrice += product.price;
     },
     removeFromCart: (state, action) => {
-      const itemInCart = state.cartItems.find(item => item.id === action.payload);
-      if (itemInCart) {
-        state.cartItems = state.cartItems.filter(item => item.id !== action.payload);
-        state.totalQuantity -= itemInCart.quantity;
-        state.totalPrice -= itemInCart.totalPrice; 
+      const productId = action.payload;
+      const existingItem = state.cartItems.find((item) => item.id === productId);
+
+      if (existingItem) {
+        state.totalQuantity -= existingItem.quantity;
+        state.totalPrice -= existingItem.totalPrice;
+        state.cartItems = state.cartItems.filter((item) => item.id !== productId);
       }
     },
     adjustQuantity: (state, action) => {
       const { id, quantity } = action.payload;
-      const itemInCart = state.cartItems.find(item => item.id === id);
-      if (itemInCart) {
-        state.totalQuantity += quantity - itemInCart.quantity;
-        state.totalPrice += (quantity - itemInCart.quantity) * itemInCart.price; 
-        itemInCart.totalPrice = itemInCart.price * quantity;
-        itemInCart.quantity = quantity; 
+      const existingItem = state.cartItems.find((item) => item.id === id);
+
+      if (existingItem) {
+        state.totalQuantity += quantity - existingItem.quantity;
+        state.totalPrice += (quantity - existingItem.quantity) * existingItem.price;
+        existingItem.quantity = quantity;
+        existingItem.totalPrice = quantity * existingItem.price;
       }
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllProducts.pending, (state) => {
+      .addCase(fetchSearchProducts.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchAllProducts.fulfilled, (state, action) => {
-        state.products = action.payload; 
+      .addCase(fetchSearchProducts.fulfilled, (state, action) => {
+        state.products = action.payload;
         state.loading = false;
       })
-      .addCase(fetchAllProducts.rejected, (state, action) => {
+      .addCase(fetchSearchProducts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message; 
+        state.error = action.error.message;
+      })
+      .addCase(fetchProductsByCategory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
+        state.products = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchProductsByCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
 export const { addToCart, removeFromCart, adjustQuantity } = cartSlice.actions;
-
 export default cartSlice.reducer;
